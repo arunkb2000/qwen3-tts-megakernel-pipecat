@@ -1,0 +1,29 @@
+== Take-home validation preflight ==
+Platform: Linux-6.15.10-zabbly+-x86_64-with-glibc2.39
+Workspace: /workspace/qwen3-tts-megakernel-pipecat
+
+python3: ok
+nvidia-smi: ok
+Detected GPU(s): NVIDIA GeForce RTX 5090
+
+python module torch: ok
+python module transformers: ok
+python module fastapi: ok
+python module uvicorn: ok
+python module numpy: ok
+python module pipecat: ok
+python module qwen_tts: ok
+
+== Full execution commands (run on RTX 5090 host) ==
+bash scripts/setup_5090.sh
+python3 -m pip install -r requirements.txt
+python3 -m qwen_megakernel.bench
+python3 scripts/benchmark_decode.py
+python3 scripts/benchmark_e2e.py
+MEGAKERNEL_TTS_AUDIO_BACKEND=qwen3 uvicorn megakernel_tts.server:app --app-dir src --host 0.0.0.0 --port 8000
+python3 pipecat_demo/pipeline.py
+bash scripts/run_takehome_all.sh
+
+If qwen_tts is missing, install according to the upstream Qwen3-TTS repo.
+The setup script includes both pip and GitHub fallback install attempts.
+Then re-run benchmark scripts and update results/metrics.md with observed values.

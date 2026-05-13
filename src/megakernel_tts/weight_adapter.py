@@ -23,6 +23,13 @@ def _extract_talker_config(model_id: str) -> TalkerConfig:
     cfg = _read_hf_config(model_id)
     hidden_size = int(cfg["hidden_size"])
     num_heads = int(cfg["num_attention_heads"])
+    text_cfg = cfg.get("text_config", {}) if isinstance(cfg.get("text_config"), dict) else {}
+    qk_rope = cfg.get("qk_rope_head_dim", text_cfg.get("qk_rope_head_dim", 0))
+    qk_nope = cfg.get("qk_nope_head_dim", text_cfg.get("qk_nope_head_dim", 0))
+    if int(qk_rope) > 0 or int(qk_nope) > 0:
+        head_dim = int(qk_rope) + int(qk_nope)
+    else:
+        head_dim = int(cfg.get("head_dim", text_cfg.get("head_dim", hidden_size // num_heads)))
     return TalkerConfig(
         model_id=model_id,
         hidden_size=hidden_size,
@@ -30,7 +37,7 @@ def _extract_talker_config(model_id: str) -> TalkerConfig:
         num_hidden_layers=int(cfg["num_hidden_layers"]),
         num_attention_heads=num_heads,
         num_key_value_heads=int(cfg.get("num_key_value_heads", num_heads)),
-        head_dim=hidden_size // num_heads,
+        head_dim=head_dim,
         vocab_size=int(cfg["vocab_size"]),
         max_position_embeddings=int(cfg.get("max_position_embeddings", 2048)),
         rope_theta=float(cfg.get("rope_theta", 10000.0)),

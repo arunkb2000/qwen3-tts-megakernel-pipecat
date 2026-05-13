@@ -1,0 +1,16 @@
+=======================================================
+Qwen Megakernel Benchmark
+=======================================================
+
+Megakernel
+Correctness check
+HF tokens: [21806, 0, 358, 2776, 264, 2699, 21815, 911]
+MK tokens: [21806, 0, 358, 1184, 1492, 448, 419, 3405]
+HF text:  Answer! I'm a bit confused about
+MK text:  Answer! I need help with this question
+
+
+=======================================================
+Backend                      tok/s   ms/tok
+-------------------------------------------------------
+Megakernel                  1025.3     0.98

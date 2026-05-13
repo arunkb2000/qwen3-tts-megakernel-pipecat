@@ -1,0 +1,5 @@
+tokens=120
+chunks=30
+ttfc_ms=18.593721091747284
+tokens_per_second=922.198
+rtf=0.1084
