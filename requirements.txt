@@ -1,0 +1,10 @@
+torch>=2.0.0
+transformers>=4.40.0
+triton>=2.2.0
+ninja
+accelerate
+fastapi>=0.115.0
+uvicorn>=0.30.0
+numpy>=1.26.0
+pipecat-ai>=0.0.73
+pydantic>=2.8.0
